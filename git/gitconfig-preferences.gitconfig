@@ -1,0 +1,47 @@
+[alias]
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+  dt = difftool
+  ch = checkout
+  br = branch
+  co = commit -m
+  st = status -s
+  cp = cherry-pick
+  ls = log --pretty=format:"%C(green)%h\\ %C(yellow)[%ad]%Cred%d\\ %Creset%s%C(magenta)\\ [%an]" --decorate --date=relative
+  ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%C(magenta)\\ [a:%an,c:%cn]" --decorate --numstat
+  lb = !git reflog show --pretty=format:'%gs ~ %gd' --date=relative | grep 'checkout:' | grep -oE '[^ ]+ ~ .*' | awk -F~ '!seen[$1]++' | head -n 10 | awk -F' ~ HEAD@{' '{printf(\"  \\033[33m%s: \\033[37m %s\\033[0m\\n\", substr($2, 1, length($2)-1), $1)}'
+
+[pull]
+	rebase = true
+
+[init]
+	defaultBranch = master
+
+[color "status"]
+  added = green
+  changed = red
+  untracked = blue
+  deleted = red
+
+[core]
+  editor = vi
+
+[diff]
+  tool = vimdiff
+
+[difftool]
+  prompt = true
+
+[difftool "vimdiff"]
+  cmd = vi -d ~/.vimrc \"$LOCAL\" \"$REMOTE\"
+
+[merge]
+  tool = vimdiff
+
+[mergetool]
+  path = vi
+  keepBackup = false
+
+[mergetool "vimdiff"]
+  path = vi
+  cmd = vi -d \"$MERGED\" \"$REMOTE\" 
+

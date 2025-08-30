@@ -1,0 +1,25 @@
+general.import = [ "~/.config/omarchy/current/theme/alacritty.toml" ]
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+normal = { family = "JetBrains Mono NL Medium" }
+bold = { family = "JetBrains Mono NL" }
+italic = { family = "JetBrains Mono NL" }
+size = 10
+
+[window]
+padding.x = 14
+padding.y = 14
+decorations = "None"
+opacity = 0.98
+
+[keyboard]
+bindings = [
+{ key = "F11", action = "ToggleFullscreen" },
+# { key = "C", mods = "Control", action = "Copy" },
+# { key = "V", mods = "Control", action = "Paste" },
+# { key = "C", mods = "Control|Shift", chars = "\u0003" }
+]
+

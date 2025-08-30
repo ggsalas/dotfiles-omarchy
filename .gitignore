@@ -1,0 +1,16 @@
+*
+!.gitignore
+!alacritty/
+!alacritty/**
+!hypr/
+!hypr/**
+!nvim-vi/
+!nvim-vi/**
+nvim-vi/db_ui/
+!branding/
+!branding/**
+!chromium-flags.conf
+!bash/
+!bash/**
+!git/
+!git/**
