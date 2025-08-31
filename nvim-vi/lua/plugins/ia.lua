@@ -1,25 +1,25 @@
 return {
   -- COPILOT
-  {
-    "zbirenbaum/copilot-cmp",
-    event = "InsertEnter",
-    config = function()
-      require("copilot_cmp").setup()
-    end,
-    dependencies = {
-      {
-        "zbirenbaum/copilot.lua",
-        cmd = "Copilot",
-        config = function()
-          require("copilot").setup({
-            suggestion = { enabled = true }, -- disable inline suggestions if you want to use cmp menu only
-            panel = { enabled = false },
-          })
-        end,
-      },
-      "hrsh7th/nvim-cmp",
-    },
-  },
+  -- {
+  --   "zbirenbaum/copilot-cmp",
+  --   event = "InsertEnter",
+  --   config = function()
+  --     require("copilot_cmp").setup()
+  --   end,
+  --   dependencies = {
+  --     {
+  --       "zbirenbaum/copilot.lua",
+  --       cmd = "Copilot",
+  --       config = function()
+  --         require("copilot").setup({
+  --           suggestion = { enabled = false }, -- disable inline suggestions if you want to use cmp menu only
+  --           panel = { enabled = false },
+  --         })
+  --       end,
+  --     },
+  --     "hrsh7th/nvim-cmp",
+  --   },
+  -- },
 
   -- COPILOT_CHAT
   {
