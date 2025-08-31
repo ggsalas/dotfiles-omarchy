@@ -113,12 +113,12 @@ return {
                   runtime = { version = 'LuaJIT' },
                   workspace = {
                     checkThirdParty = false,
-                    -- Tells lua_ls where to find all the Lua files that you have loaded
-                    -- for your neovim configuration.
-                    library = {
-                      '${3rd}/luv/library',
-                      unpack(vim.api.nvim_get_runtime_file('', true)),
-                    },
+                    -- -- Tells lua_ls where to find all the Lua files that you have loaded
+                    -- -- for your neovim configuration.
+                    -- library = {
+                    --   '${3rd}/luv/library',
+                    --   unpack(vim.api.nvim_get_runtime_file('', true)),
+                    -- },
                   },
                 },
               }
@@ -220,12 +220,11 @@ return {
           end, { 'i', 's', 'c' }),
         },
         sources = cmp.config.sources({
-          { name = "copilot" }, -- Copilot source
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-        }, {
-          { name = 'buffer' },
-          { name = 'path' }
+          { name = "copilot",  group_index = 2 },
+          { name = "nvim_lsp", group_index = 2 },
+          { name = "path",     group_index = 2 },
+          { name = "luasnip",  group_index = 2 },
+          { name = 'buffer',   group_index = 2 },
         }),
       }
 
