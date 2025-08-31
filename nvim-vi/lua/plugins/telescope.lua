@@ -69,7 +69,7 @@ return {
         local job_command = vim.tbl_flatten({
           'sh',
           '-c',
-          'git --git-dir $HOME/.dotfiles/ ls-files --full-name | sed "s,^,$HOME/,"'
+          'git --git-dir $HOME/.config/ ls-files --full-name | sed "s,^,$HOME/,"'
         })
         local finder = finders.new_oneshot_job(job_command)
         local previewer = conf.file_previewer(opts)
@@ -176,8 +176,10 @@ return {
       end
 
       local search_dot_files = function()
-        dot_files({
-          previewer = false,
+        builtin.find_files({
+          prompt_title = "DotFiles",
+          cwd = "~/.config/",
+          disable_devicons = true,
         })
       end
 
