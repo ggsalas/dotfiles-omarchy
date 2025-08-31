@@ -14,3 +14,9 @@ nvim-vi/db_ui/
 !bash/**
 !git/
 !git/**
+
+!omarchy/
+!omarchy/themes/
+!omarchy/themes/gg-solarized-light/
+!omarchy/themes/gg-solarized-light/**
+
