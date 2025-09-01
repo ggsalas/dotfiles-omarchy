@@ -93,8 +93,8 @@ return {
           'lua_ls',
           'phpactor',
           'tailwindcss',
-          -- 'cssls',
-          -- 'cssmodules_ls',
+          'cssls',
+          'cssmodules_ls',
         },
         handlers = {
           function(server_name) -- default handler (optional)

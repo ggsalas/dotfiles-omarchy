@@ -30,9 +30,9 @@ return {
     -- Custom statusline
     --------------------
     local function statusline()
-      -- save this function in global scope 
+      -- save this function in global scope
       function vim.g.get_lsp_status()
-        if #vim.lsp.buf_get_clients() > 0 then
+        if #vim.lsp.get_clients({ bufnr = 0 }) > 0 then
           return require('lsp-status').status()
         else
           return " "
