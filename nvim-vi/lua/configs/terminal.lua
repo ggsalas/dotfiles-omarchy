@@ -1,4 +1,4 @@
-vim.keymap.set('n', '<leader>te', ':botright vsp term://zsh<cr>')
+vim.keymap.set('n', '<leader>te', ':botright vsp term://bash<cr>')
 
 local terminal_mode = vim.api.nvim_create_augroup('terminal_mode', { clear = true })
 

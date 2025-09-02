@@ -16,6 +16,9 @@ nvim-vi/db_ui/
 !git/**
 !opencode/
 !opencode/**
+!fontconfig/
+!fontconfig/fonts.conf
+
 
 !omarchy/
 !omarchy/themes/
