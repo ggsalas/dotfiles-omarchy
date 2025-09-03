@@ -16,8 +16,11 @@ nvim-vi/db_ui/
 !git/**
 !opencode/
 !opencode/**
+!waybar/
+!waybar/**
 !fontconfig/
 !fontconfig/fonts.conf
+
 
 
 !omarchy/

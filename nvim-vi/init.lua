@@ -11,5 +11,8 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- Disable LazyVim plugin loading checks since we only use lazy.nvim as a plugin manager
+vim.g.lazyvim_check_order = false
+
 require("configs")
 require("lazy").setup("plugins")
