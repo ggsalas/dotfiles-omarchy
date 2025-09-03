@@ -59,9 +59,9 @@
   "clock": {
     // TODO: this is not working automatically
     "timezone": "America/Argentina/Buenos_Aires", 
-    // "format": "{:%I:%M %p}",
-    "format": "{:%H:%M %Z}",
-    "tooltip-format": "<big>{:%d %B %Y}</big>\n<tt><small>{calendar}</small></tt>",
+    "format": "{:%I:%M %p}",
+    // With timezone, to test ->  "format": "{:%H:%M %Z}",
+    "tooltip-format": "<big>{:%A | %b %e %Y}</big>\n\n<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "year",
       "mode-mon-col": 3,
