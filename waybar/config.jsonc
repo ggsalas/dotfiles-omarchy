@@ -66,10 +66,10 @@
       "mode": "year",
       "mode-mon-col": 3,
       "format": {
-        "months": "<span><b>{}</b></span>",
+        "months": "<span>{}</span>",
         "days": "<span>{}</span>",
-        "weekdays": "<span><b>{}</b></span>",
-        "today": "<span><b><u>{}</u></b></span>"
+        "weekdays": "<span>{}></span>",
+        "today": "<span></span>"
       }
     },
     "on-click": "omarchy-launch-webapp 'https://calendar.google.com'",
