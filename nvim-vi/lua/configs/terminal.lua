@@ -11,7 +11,7 @@ vim.api.nvim_create_autocmd('TermOpen', {
 
 vim.api.nvim_create_autocmd('TermOpen', {
   callback = function()
-    vim.api.nvim_buf_set_keymap(0, 't', '<Esc>', '<c-\\><c-n>', opts)
+    vim.api.nvim_buf_set_keymap(0, 't', '<C-Esc>', '<c-\\><c-n>', opts)
   end,
   group = terminal_mode,
 })

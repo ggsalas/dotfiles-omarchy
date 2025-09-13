@@ -20,6 +20,8 @@ nvim-vi/db_ui/
 !waybar/**
 !fontconfig/
 !fontconfig/fonts.conf
+!starship.toml
+
 
 
 
