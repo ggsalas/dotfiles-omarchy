@@ -21,12 +21,14 @@ nvim-vi/db_ui/
 !fontconfig/
 !fontconfig/fonts.conf
 !starship.toml
-
-
+!posting/
+!posting/**
 
 
 !omarchy/
 !omarchy/themes/
 !omarchy/themes/gg-solarized-light/
 !omarchy/themes/gg-solarized-light/**
+!omarchy/themes/gg-osaka-jade/
+!omarchy/themes/gg-osaka-jade/**
 

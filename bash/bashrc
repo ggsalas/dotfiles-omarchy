@@ -10,3 +10,6 @@ fi
 
 # opencode
 export PATH=$HOME/.opencode/bin:$PATH
+
+# posting tui
+export POSTING_THEME_DIRECTORY=$HOME/.config/posting/themes

@@ -1,0 +1,12 @@
+name: omarchy-theme
+primary: "#53685B"
+secondary: "#23372B"
+warning: "#D2689C"
+error: "#FF5345"
+success: "#549e6a"
+accent: "#8CD3CB"
+background: "#111c18"
+surface: "#23372B"
+panel: "#143614"
+dark: true
+syntax: "posting"
