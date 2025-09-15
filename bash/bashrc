@@ -1,5 +1,5 @@
 alias vi='NVIM_APPNAME=nvim-vi nvim'
-export EDITOR="vi"
+export EDITOR="nvim"
 export SUDO_EDITOR="$EDITOR"
 
 # use ctrl-z to toggle in and out of bg

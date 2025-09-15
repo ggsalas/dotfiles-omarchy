@@ -23,7 +23,7 @@
   deleted = red
 
 [core]
-  editor = vi
+  editor = nvim
 
 [diff]
   tool = vimdiff
@@ -32,16 +32,16 @@
   prompt = true
 
 [difftool "vimdiff"]
-  cmd = vi -d ~/.vimrc \"$LOCAL\" \"$REMOTE\"
+  cmd = nvim -d ~/.vimrc \"$LOCAL\" \"$REMOTE\"
 
 [merge]
   tool = vimdiff
 
 [mergetool]
-  path = vi
+  path = nvim
   keepBackup = false
 
 [mergetool "vimdiff"]
-  path = vi
-  cmd = vi -d \"$MERGED\" \"$REMOTE\" 
+  path = nvim
+  cmd = nvim -d \"$MERGED\" \"$REMOTE\" 
 

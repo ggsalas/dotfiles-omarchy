@@ -25,8 +25,8 @@ format = "[$branch]($style) "
 style = "italic cyan"
 
 [git_status]
-format      = '[](fg:cyan)[$ahead_behind$staged$conflicted$modified$renamed$deleted$typechanged$untracked]($style)[ ](fg:cyan)'
-style       = "bg:cyan fg:white"
+format      = '[$ahead_behind$staged$conflicted$modified$renamed$deleted$typechanged$untracked ]($style)'
+style       = "bold bg:none fg:cyan "
 ahead       = "⇡${count}"
 diverged    = "⇕⇡${ahead_count}⇣${behind_count}"
 behind      = "⇣${count}"
