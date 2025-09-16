@@ -1,10 +1,10 @@
 name: omarchy-theme
-primary: "#53685B"
-secondary: "#23372B"
+primary: "#2DD5B7"
+secondary: "#E1B55E"
 warning: "#D2689C"
 error: "#FF5345"
 success: "#549e6a"
-accent: "#8CD3CB"
+accent: "#59c61f"
 background: "#111c18"
 surface: "#23372B"
 panel: "#143614"

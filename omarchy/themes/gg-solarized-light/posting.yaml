@@ -8,4 +8,5 @@ accent: "#6c71c4"
 background: "#fdf6e3"
 surface: "#eee8d5"
 panel: "#eee8d5"
+dark: false
 syntax: "posting"

@@ -1,2 +1,3 @@
 theme: omarchy-theme
-
+keymap:
+  open-in-editor: ctrl+e
