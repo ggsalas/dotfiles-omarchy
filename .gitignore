@@ -23,6 +23,8 @@ nvim-vi/db_ui/
 !starship.toml
 !posting/
 !posting/**
+!bin/
+!bin/**
 
 
 !omarchy/
