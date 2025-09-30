@@ -10,6 +10,7 @@ nvim-vi/db_ui/
 !branding/
 !branding/**
 !chromium-flags.conf
+!brave-flags.conf
 !bash/
 !bash/**
 !git/
