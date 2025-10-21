@@ -36,6 +36,7 @@
       "2": [],
       "3": [],
       "4": [],
+      "5": [],
       "6": [],
       "7": [],
       "8": [],
@@ -63,7 +64,6 @@
     "on-click": "alacritty -e btop"
   },
   "clock": {
-    // TODO: this is not working automatically
     "timezone": "America/Argentina/Buenos_Aires", 
     "format": "{:%b %d - %I:%M %p}",
     // With timezone, to test ->  "format": "{:%H:%M %Z}",
@@ -79,7 +79,7 @@
       }
     },
     "on-click": "omarchy-launch-webapp 'https://calendar.google.com'",
-    "on-click-right": "omarchy-cmd-tzupdate"
+    "on-click-right": "omarchy-launch-floating-terminal-with-presentation omarchy-tz-select"
   },
   "network": {
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
