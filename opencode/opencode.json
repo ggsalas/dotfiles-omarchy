@@ -2,7 +2,6 @@
   "$schema": "https://opencode.ai/config.json",
   "keybinds": {
     "leader": "ctrl+a",
-    "app_help": "<leader>h",
     "editor_open": "<leader>e",
 
     "session_interrupt": "ctrl+q",
@@ -28,13 +27,11 @@
     "messages_last": "ctrl+G",
 
     "messages_copy": "<leader>y",
-    "messages_undo": "<leader>u", 
+    "messages_undo": "<leader>u",
     "messages_redo": "<leader>r",
     "model_list": "<leader>m",
-    "tool_details": "<leader>d",
-    "project_init": "<leader>i",
 
-    "app_exit": "ctrl+c, <leader>q"
+    "app_exit": "ctrl+c"
   },
   "provider": {
     "ollama": {
