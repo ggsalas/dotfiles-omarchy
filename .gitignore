@@ -27,15 +27,17 @@ nvim-vi/db_ui/
 !bin/
 !bin/**
 
+# Not add backup files
+**/*.bak.[0-9]*
 
+# custom neovim colors for default themes
+!omarchy/default-themes-extras/
+!omarchy/default-themes-extras/**
+
+# New themes
 !omarchy/
 !omarchy/themes/
 !omarchy/themes/gg-solarized-light/
 !omarchy/themes/gg-solarized-light/**
 !omarchy/themes/gg-osaka-jade/
 !omarchy/themes/gg-osaka-jade/**
-
-# custom neovim colors for default themes
-!omarchy/default-themes-extras/
-!omarchy/default-themes-extras/**
-
