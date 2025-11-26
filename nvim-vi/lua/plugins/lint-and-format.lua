@@ -51,6 +51,15 @@ return {
           lua = { "stylua" },
           python = { "isort", "black" },
         },
+        formatters = {
+          stylua = {
+            prepend_args = {
+              "--indent-type", "Spaces",
+              "--indent-width", "2",
+              "--column-width", "120",
+            },
+          },
+        },
         format_on_save = {
           lsp_fallback = true,
           async = false,

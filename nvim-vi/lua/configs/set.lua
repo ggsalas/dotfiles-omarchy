@@ -4,6 +4,9 @@
 -- Make line numbers default
 vim.o.number = true
 
+-- Enable cursorline
+vim.o.cursorline = true
+
 -- Enable mouse mode
 vim.o.mouse = 'a'
 

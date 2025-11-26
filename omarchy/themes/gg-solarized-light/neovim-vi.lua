@@ -1,5 +1,6 @@
 return {
   "maxmx03/solarized.nvim",
+  name = "solarized",
   lazy = false,
   priority = 1000,
   opts = {
@@ -22,9 +23,8 @@ return {
     end,
   },
   config = function(_, opts)
-    vim.o.termguicolors = true
     vim.o.background = "light" -- Set before setup for light mode
+
     require("solarized").setup(opts)
-    vim.cmd.colorscheme("solarized")
   end,
 }

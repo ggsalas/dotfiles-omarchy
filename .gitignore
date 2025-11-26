@@ -35,3 +35,7 @@ nvim-vi/db_ui/
 !omarchy/themes/gg-osaka-jade/
 !omarchy/themes/gg-osaka-jade/**
 
+# custom neovim colors for default themes
+!omarchy/default-themes-extras/
+!omarchy/default-themes-extras/**
+
