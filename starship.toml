@@ -7,6 +7,7 @@ $git_status\
 $git_branch\
 $line_break\
 $python\
+$jobs\
 $character"""
 
 
@@ -31,11 +32,14 @@ ahead       = "⇡${count}"
 diverged    = "⇕⇡${ahead_count}⇣${behind_count}"
 behind      = "⇣${count}"
 conflicted  = " "
-up_to_date  = " "
+up_to_date  = " "
 untracked   = " "
 modified    = " "
-stashed     = ""
 staged      = " "
-renamed     = " "
-deleted     = " "
-typechanged = " "
+renamed     = ""
+deleted     = ""
+typechanged = ""
+stashed     = ""
+
+[jobs]
+symbol = "󰊠 "
