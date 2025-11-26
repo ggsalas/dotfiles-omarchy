@@ -20,9 +20,10 @@ return {
       }
     end,
   },
-  config = function(opts)
+  config = function(_, opts)
     vim.opt.background = "dark"
 
     require("monokai-pro").setup(opts)
+    pcall(vim.cmd.colorscheme, "monokai-pro")
   end,
 }

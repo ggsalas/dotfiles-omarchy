@@ -1,10 +1,8 @@
 return {
-  "folke/tokyonight.nvim",
-  lazy = false,
-  priority = 1000,
   name = "tokyonight",
   opts = {},
-  config = function(opts)
+  config = function(_, opts)
     vim.opt.background = "dark"
+    pcall(vim.cmd.colorscheme, "tokyonight")
   end,
 }

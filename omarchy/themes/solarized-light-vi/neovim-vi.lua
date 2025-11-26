@@ -23,8 +23,8 @@ return {
     end,
   },
   config = function(_, opts)
-    vim.o.background = "light" -- Set before setup for light mode
-
+    vim.o.background = "light"
     require("solarized").setup(opts)
+    pcall(vim.cmd.colorscheme, "solarized")
   end,
 }

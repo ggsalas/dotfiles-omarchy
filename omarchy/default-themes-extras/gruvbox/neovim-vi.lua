@@ -8,5 +8,6 @@ return {
     vim.o.background = "dark" -- Set before setup for light mode
 
     require("gruvbox").setup(opts)
+    pcall(vim.cmd.colorscheme, "gruvbox")
   end,
 }

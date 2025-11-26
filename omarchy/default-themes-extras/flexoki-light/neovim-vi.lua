@@ -6,5 +6,6 @@ return {
   opts = {},
   config = function(_, opts)
     vim.o.background = "light" -- Set before setup for light mode
+    pcall(vim.cmd.colorscheme, "flexoki-light")
   end,
 }

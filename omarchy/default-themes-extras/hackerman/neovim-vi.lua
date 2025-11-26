@@ -6,5 +6,6 @@ return {
   opts = {},
   config = function(_, opts)
     vim.o.background = "dark" -- Set before setup for light mode
+    pcall(vim.cmd.colorscheme, "hackerman")
   end,
 }

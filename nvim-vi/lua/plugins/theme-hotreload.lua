@@ -25,21 +25,6 @@ return {
               theme_plugin_name = theme_spec.name or theme_spec[1]:match("[^/]+$")
             end
 
-            -- Clear all highlight groups before applying new theme
-            vim.cmd("highlight clear")
-            if vim.fn.exists("syntax_on") then
-              vim.cmd("syntax reset")
-            end
-
-            -- Reset background to default so colorscheme can set it properly (light themes will set to light)
-            -- Special handling for known light themes
-            local theme_name = vim.fn.fnamemodify(vim.fn.expand("%:p:h"), ":t")
-            if theme_name == "catppuccin-latte" or theme_name:match("light") then
-              vim.o.background = "light"
-            else
-              vim.o.background = "dark"
-            end
-
             -- Unload theme plugin modules to force full reload
             if theme_plugin_name then
               local plugin = require("lazy.core.config").plugins[theme_plugin_name]
@@ -53,30 +38,31 @@ return {
               end
             end
 
-            -- Derive colorscheme name (e.g., "bamboo" from "bamboo.nvim")
-            --
+            -- Load the colorscheme plugin before executing config
             local colorscheme = theme_plugin_name and theme_plugin_name:gsub("%.nvim$", "") or nil
             if colorscheme then
-              -- Load the colorscheme plugin
               require("lazy.core.loader").colorscheme(colorscheme)
-              vim.defer_fn(function()
-                -- Apply the colorscheme (it will set background itself)
-                pcall(vim.cmd.colorscheme, colorscheme)
-                -- Force redraw to update all UI elements
-                vim.cmd("redraw!")
-                -- Reload transparency settings if file exists
-                if vim.fn.filereadable(transparency_file) == 1 then
-                  vim.defer_fn(function()
-                    vim.cmd.source(transparency_file)
-                    -- Trigger UI updates for various plugins
-                    vim.api.nvim_exec_autocmds("ColorScheme", { modeline = false })
-                    vim.api.nvim_exec_autocmds("VimEnter", { modeline = false })
-                    -- Final redraw
-                    vim.cmd("redraw!")
-                  end, 5)
-                end
-              end, 5)
             end
+
+            -- Execute the theme's config function (which sets background, runs setup, and applies colorscheme)
+            if theme_spec.config and type(theme_spec.config) == "function" then
+              -- Call config with proper parameters: (plugin_spec, opts_table)
+              local plugin_opts = theme_spec.opts or {}
+              theme_spec.config(theme_spec, plugin_opts)
+            end
+
+            -- Force redraw and reload transparency
+            vim.defer_fn(function()
+              vim.cmd("redraw!")
+              -- Reload transparency settings if file exists
+              if vim.fn.filereadable(transparency_file) == 1 then
+                vim.defer_fn(function()
+                  vim.cmd.source(transparency_file)
+                  -- Final redraw
+                  vim.cmd("redraw!")
+                end, 5)
+              end
+            end, 5)
           end)
         end,
       })
