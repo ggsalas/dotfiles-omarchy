@@ -1,29 +1,21 @@
-vim.keymap.set('n', '<leader>te', ':botright vsp term://bash<cr>')
+vim.keymap.set("n", "<leader>te", ":botright vsp term://bash<cr> i")
 
-local terminal_mode = vim.api.nvim_create_augroup('terminal_mode', { clear = true })
+-- Terminal mode configuration
+local terminal_mode = vim.api.nvim_create_augroup("terminal_mode", { clear = true })
 
-local opts = { noremap = true, silent = true }
-
-vim.api.nvim_create_autocmd('TermOpen', {
-  command = ':startinsert',
+vim.api.nvim_create_autocmd("TermOpen", {
   group = terminal_mode,
-})
-
-vim.api.nvim_create_autocmd('TermOpen', {
   callback = function()
-    vim.api.nvim_buf_set_keymap(0, 't', '<Esc>', '<c-\\><c-n>', opts)
-  end,
-  group = terminal_mode,
-})
+    -- Remove line numbers and cursorline
+    vim.opt_local.number = false
+    vim.opt_local.cursorline = false
 
-vim.api.nvim_create_autocmd('TermOpen', {
-  callback = function()
-    vim.api.nvim_buf_set_keymap(0, 'n', 'gq', ':bd!<cr>', opts)
-  end,
-  group = terminal_mode,
-})
+    -- Terminal mode keymaps
+    local opts = { buffer = 0, silent = true, nowait = true }
+    vim.keymap.set("t", "<C-;>", "<c-\\><c-n>", opts) -- Exit terminal mode
+    vim.keymap.set("t", "<Space>", "<Space>", opts) -- No leader delay
 
-vim.api.nvim_create_autocmd('TermOpen', {
-  command = ':setlocal nonumber nocursorline',
-  group = terminal_mode,
+    -- Normal mode keymaps (when in terminal buffer but not in terminal mode)
+    vim.keymap.set("n", "gq", ":bd!<cr>", opts) -- Quit terminal buffer
+  end,
 })
