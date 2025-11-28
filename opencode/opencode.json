@@ -4,7 +4,7 @@
     "leader": "ctrl+a",
     "editor_open": "<leader>e",
 
-    "session_interrupt": "ctrl+q",
+    "session_interrupt": "escape",
     "session_new": "<leader>n",
     "session_list": "<leader>l",
     "session_share": "<leader>s",

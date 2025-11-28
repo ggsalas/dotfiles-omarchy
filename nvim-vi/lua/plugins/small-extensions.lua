@@ -5,8 +5,8 @@ return {
     "brenoprata10/nvim-highlight-colors",
     config = function()
       vim.o.termguicolors = true
-      require('nvim-highlight-colors').setup()
-    end
+      require("nvim-highlight-colors").setup()
+    end,
   },
 
   -- Surround
@@ -16,28 +16,28 @@ return {
     version = "*",
     config = function()
       require("nvim-surround").setup()
-    end
+    end,
   },
 
   -- handle persistent undo visually
   ----------------------------------
   {
     "mbbill/undotree",
-    event = 'VeryLazy',
+    event = "VeryLazy",
     config = function()
-      vim.keymap.set('n', '<Leader>u', ':UndotreeToggle<CR>')
-    end
+      vim.keymap.set("n", "<Leader>u", ":UndotreeToggle<CR>")
+    end,
   },
 
   -- Detect tabstop and shiftwidth automatically
   ----------------------------------------------
   {
-    "tpope/vim-sleuth"
+    "tpope/vim-sleuth",
   },
 
   -- html template system
   -----------------------
   {
-    "mustache/vim-mustache-handlebars"
-  }
+    "mustache/vim-mustache-handlebars",
+  },
 }

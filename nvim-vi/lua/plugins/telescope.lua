@@ -3,44 +3,44 @@ return {
     "nvim-telescope/telescope-ui-select.nvim",
   },
   {
-    'nvim-telescope/telescope-fzf-native.nvim',
-    build = 'make'
+    "nvim-telescope/telescope-fzf-native.nvim",
+    build = "make",
   },
   {
     "nvim-telescope/telescope.nvim",
     tag = "0.1.5",
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
-      local actions = require 'telescope.actions'
-      local finders = require 'telescope.finders'
-      local pickers = require 'telescope.pickers'
-      local conf = require('telescope.config').values
-      local utils = require('telescope.utils')
-      local builtin = require('telescope.builtin')
-      local themes = require('telescope.themes')
-      local action_state = require('telescope.actions.state')
+      local actions = require("telescope.actions")
+      local finders = require("telescope.finders")
+      local pickers = require("telescope.pickers")
+      local conf = require("telescope.config").values
+      local utils = require("telescope.utils")
+      local builtin = require("telescope.builtin")
+      local themes = require("telescope.themes")
+      local action_state = require("telescope.actions.state")
 
       require("telescope").setup({
         defaults = {
-          file_sorter = require('telescope.sorters').get_fzy_sorter,
-          prompt_prefix = '  ',
-          selection_caret = '❯ ',
+          file_sorter = require("telescope.sorters").get_fzy_sorter,
+          prompt_prefix = "  ",
+          selection_caret = "❯ ",
           disable_devicons = true, -- seems is not detected as default, added on each function
-          layout_strategy = 'vertical',
+          layout_strategy = "vertical",
           layout_config = { horizontal = { preview_width = 0.3 }, vertical = { preview_height = 0.6 } },
           mappings = {
             i = {
-              ['<C-j>'] = actions.move_selection_next,
-              ['<C-k>'] = actions.move_selection_previous,
-              ['<C-q>'] = actions.smart_send_to_qflist + actions.open_qflist,
-              ['<esc>'] = actions.close,
-              ['<C-p>'] = require('telescope.actions.layout').toggle_preview,
-              ['<cr>'] = actions.select_default + actions.center,
+              ["<C-j>"] = actions.move_selection_next,
+              ["<C-k>"] = actions.move_selection_previous,
+              ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+              ["<esc>"] = actions.close,
+              ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
+              ["<cr>"] = actions.select_default + actions.center,
             },
             n = {
-              ['<C-w>'] = actions.send_selected_to_qflist,
-              ['<C-q>'] = actions.send_to_qflist,
-              ['<C-p>'] = require('telescope.actions.layout').toggle_preview,
+              ["<C-w>"] = actions.send_selected_to_qflist,
+              ["<C-q>"] = actions.send_to_qflist,
+              ["<C-p>"] = require("telescope.actions.layout").toggle_preview,
             },
           },
         },
@@ -50,38 +50,17 @@ return {
           },
         },
         extensions = {
-          ['ui-select'] = {
-            themes.get_dropdown {},
+          ["ui-select"] = {
+            themes.get_dropdown({}),
           },
         },
       })
 
       -- Enable telescope fzf native, if installed
-      pcall(require('telescope').load_extension, 'fzf')
+      pcall(require("telescope").load_extension, "fzf")
 
       -- Enable handling for code actions
-      require('telescope').load_extension 'ui-select'
-
-      -- Custom Picker
-      ----------------
-      local dot_files = function(opts)
-        opts = opts or {}
-        local job_command = vim.tbl_flatten({
-          'sh',
-          '-c',
-          'git --git-dir $HOME/.config/ ls-files --full-name | sed "s,^,$HOME/,"'
-        })
-        local finder = finders.new_oneshot_job(job_command)
-        local previewer = conf.file_previewer(opts)
-        local sorter = conf.file_sorter(opts)
-
-        pickers.new(opts, {
-          prompt_title = 'DotFiles',
-          finder = finder,
-          previewer = previewer,
-          sorter = sorter,
-        }):find()
-      end
+      require("telescope").load_extension("ui-select")
 
       -- Custom actions
       -----------------
@@ -89,9 +68,9 @@ return {
         local dir = utils.buffer_dir()
 
         builtin.git_files({
-          prompt_title = string.format('Find files the Current Dir (%s)', dir),
+          prompt_title = string.format("Find files the Current Dir (%s)", dir),
           cwd = dir,
-          disable_devicons = true
+          disable_devicons = true,
         })
       end
 
@@ -99,7 +78,7 @@ return {
         local dir = utils.buffer_dir()
 
         builtin.live_grep({
-          prompt_title = string.format('Grep in the Current Dir (%s)', dir),
+          prompt_title = string.format("Grep in the Current Dir (%s)", dir),
           cwd = dir,
           disable_devicons = true,
           only_sort_text = true,
@@ -110,7 +89,7 @@ return {
 
       local live_grep = function()
         builtin.live_grep({
-          prompt_title = string.format('Grep in the local in Dir', utils.buffer_dir()),
+          prompt_title = string.format("Grep in the local in Dir", utils.buffer_dir()),
           disable_devicons = true,
           only_sort_text = true,
           use_regex = false,
@@ -134,7 +113,7 @@ return {
           -- print(vim.inspect(cols))
 
           if cols < 80 then
-            return .9
+            return 0.9
           elseif cols < 150 then
             return 0.8
           else
@@ -144,14 +123,14 @@ return {
 
         local wp = width_padding()
 
-        builtin.buffers {
+        builtin.buffers({
           sort_lastused = true,
           show_all_buffers = true,
           disable_devicons = true,
           previewer = false,
           width_padding = wp,
-          layout_strategy = 'vertical',
-          layout_config = { width = wp, height = .55 },
+          layout_strategy = "vertical",
+          layout_config = { width = wp, height = 0.55 },
           attach_mappings = function(prompt_bufnr, map)
             local delete_buf = function()
               local current_picker = action_state.get_current_picker(prompt_bufnr)
@@ -169,10 +148,10 @@ return {
               end
             end
 
-            map('i', '<C-x>', delete_buf)
+            map("i", "<C-x>", delete_buf)
             return true
-          end
-        }
+          end,
+        })
       end
 
       local search_dot_files = function()
@@ -191,56 +170,45 @@ return {
         })
       end
 
-
       -- Mappings
       -----------
 
       -- files & grep
-      vim.keymap.set('n', '<leader>l', builtin.diagnostics, { desc = 'Search [L]inter' })
-      vim.keymap.set('n', '<leader>j', buffer_list)
-      vim.keymap.set('n', '<leader>f', builtin.git_files)
-      vim.keymap.set('n', '<leader>s', live_grep, { desc = 'Grep in the Main Dir' })
-      vim.keymap.set('n', '<leader>df', find_files_current_dir)
-      vim.keymap.set('n', '<leader>ds', grep_current_dir, { desc = 'Grep in the Current Dir' })
-      vim.keymap.set('n', '<leader>*', grep_string, { desc = 'Grep word under cursor' })
+      vim.keymap.set("n", "<leader>l", builtin.diagnostics, { desc = "Search [L]inter" })
+      vim.keymap.set("n", "<leader>j", buffer_list)
+      vim.keymap.set("n", "<leader>f", builtin.git_files)
+      vim.keymap.set("n", "<leader>s", live_grep, { desc = "Grep in the Main Dir" })
+      vim.keymap.set("n", "<leader>df", find_files_current_dir)
+      vim.keymap.set("n", "<leader>ds", grep_current_dir, { desc = "Grep in the Current Dir" })
+      vim.keymap.set("n", "<leader>*", grep_string, { desc = "Grep word under cursor" })
 
-      vim.keymap.set('n', '<leader>gs', builtin.git_stash)
-      vim.keymap.set('n', '<leader>gb', builtin.git_branches)
-      vim.keymap.set('n', '<leader>gc', builtin.git_bcommits)
-      vim.keymap.set('n', '<leader>gC', builtin.git_commits)
-      vim.keymap.set('n', '<leader>gf', builtin.git_status)
+      vim.keymap.set("n", "<leader>gs", builtin.git_stash)
+      vim.keymap.set("n", "<leader>gb", builtin.git_branches)
+      vim.keymap.set("n", "<leader>gc", builtin.git_bcommits)
+      vim.keymap.set("n", "<leader>gC", builtin.git_commits)
+      vim.keymap.set("n", "<leader>gf", builtin.git_status)
 
       -- vim
-      vim.keymap.set(
-        'n',
-        '<leader>gh',
-        function() builtin.help_tags({ prompt_title = 'Search Vim Help' }) end
-      )
-      vim.keymap.set(
-        'n',
-        '<leader>gn',
-        function() builtin.man_pages({ prompt_title = 'Search Man Pages' }) end
-      )
-      vim.keymap.set(
-        'n',
-        '<leader>gm',
-        function() builtin.marks({ prompt_title = 'Search Marks' }) end
-      )
-      vim.keymap.set(
-        'n',
-        '<leader>gq',
-        function() builtin.quickfix({ prompt_title = 'Search QuickFix list' }) end
-      )
-      vim.keymap.set(
-        'n',
-        '<leader>z',
-        function() builtin.spell_suggest(themes.get_dropdown({ prompt_title = 'Spell Suggestions' })) end
-      )
-      vim.keymap.set('n', '<leader>gk', builtin.keymaps)
-      vim.keymap.set('n', '<leader>do', search_dot_files)
+      vim.keymap.set("n", "<leader>gh", function()
+        builtin.help_tags({ prompt_title = "Search Vim Help" })
+      end)
+      vim.keymap.set("n", "<leader>gn", function()
+        builtin.man_pages({ prompt_title = "Search Man Pages" })
+      end)
+      vim.keymap.set("n", "<leader>gm", function()
+        builtin.marks({ prompt_title = "Search Marks" })
+      end)
+      vim.keymap.set("n", "<leader>gq", function()
+        builtin.quickfix({ prompt_title = "Search QuickFix list" })
+      end)
+      vim.keymap.set("n", "<leader>z", function()
+        builtin.spell_suggest(themes.get_dropdown({ prompt_title = "Spell Suggestions" }))
+      end)
+      vim.keymap.set("n", "<leader>gk", builtin.keymaps)
+      vim.keymap.set("n", "<leader>do", search_dot_files)
 
-      vim.api.nvim_create_user_command('Notes', search_notes, {})
-      vim.api.nvim_create_user_command('NotesFolder', "e ~/Google Drive/My\\ Drive/Notas/", {})
+      vim.api.nvim_create_user_command("Notes", search_notes, {})
+      vim.api.nvim_create_user_command("NotesFolder", "e ~/Google Drive/My\\ Drive/Notas/", {})
     end,
   },
 }

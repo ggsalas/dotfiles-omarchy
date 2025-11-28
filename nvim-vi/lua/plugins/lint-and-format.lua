@@ -22,10 +22,6 @@ return {
           lint.try_lint()
         end,
       })
-
-      -- vim.keymap.set("n", "<leader>l", function()
-      --   lint.try_lint()
-      -- end, { desc = "Trigger linting for current file" })
     end,
   },
   {
@@ -54,9 +50,12 @@ return {
         formatters = {
           stylua = {
             prepend_args = {
-              "--indent-type", "Spaces",
-              "--indent-width", "2",
-              "--column-width", "120",
+              "--indent-type",
+              "Spaces",
+              "--indent-width",
+              "2",
+              "--column-width",
+              "120",
             },
           },
         },
@@ -75,6 +74,5 @@ return {
         })
       end, { desc = "Format file or range (in visual mode)" })
     end,
-  }
+  },
 }
-

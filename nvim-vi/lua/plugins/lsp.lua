@@ -37,7 +37,6 @@ return {
         end
 
         nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-        nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
         nmap("gd", builtin.lsp_definitions, "[G]oto [D]efinition")
         nmap("gr", builtin.lsp_references, "[G]oto [R]eferences")

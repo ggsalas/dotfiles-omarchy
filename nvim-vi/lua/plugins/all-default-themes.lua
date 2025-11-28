@@ -1,0 +1,1 @@
+/home/ggsalas/.config/nvim/lua/plugins/all-themes.lua
