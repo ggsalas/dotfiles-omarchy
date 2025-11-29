@@ -1,4 +1,18 @@
 return {
+  {
+    "mfussenegger/nvim-dap-python",
+    event = "VeryLazy",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+    },
+    lazy = true,
+    config = function()
+      require("dap-python").setup(vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python")
+    end,
+    -- Consider the mappings at
+    -- https://github.com/mfussenegger/nvim-dap-python?tab=readme-ov-file#mappings
+  },
+
   -- Debug Adapter Protocol for Neovim
   ------------------------------------
   {
@@ -103,7 +117,11 @@ return {
       end
 
       -- Breakpoint signs with Nerd Font icons
-      vim.fn.sign_define("DapBreakpoint", { text = "󰝥", texthl = "DiagnosticInfo", linehl = "", numhl = "" })
+      vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "DiagnosticError", linehl = "", numhl = "" })
+      vim.fn.sign_define("DapBreakpointCondition", { text = "◆", texthl = "DiagnosticWarn", linehl = "", numhl = "" })
+      vim.fn.sign_define("DapBreakpointRejected", { text = "○", texthl = "DiagnosticHint", linehl = "", numhl = "" })
+      vim.fn.sign_define("DapLogPoint", { text = "◉", texthl = "DiagnosticInfo", linehl = "", numhl = "" })
+      vim.fn.sign_define("DapStopped", { text = "", texthl = "DiagnosticWarn", linehl = "CursorLine", numhl = "" })
 
       -- Eval var under cursor
       vim.keymap.set("n", "<space>?", function()
@@ -122,12 +140,26 @@ return {
     end,
   },
 
-  -- seems not working
+  -- Virtual text for DAP
   {
     "theHamsta/nvim-dap-virtual-text",
     dependencies = { "mfussenegger/nvim-dap", "nvim-treesitter/nvim-treesitter" },
     config = function()
-      require("nvim-dap-virtual-text").setup()
+      require("nvim-dap-virtual-text").setup({
+        enabled = true,
+        enabled_commands = true,
+        highlight_changed_variables = true,
+        highlight_new_as_changed = false,
+        show_stop_reason = true,
+        commented = false,
+        only_first_definition = true,
+        all_references = false,
+        clear_on_continue = false,
+        virt_text_pos = vim.fn.has("nvim-0.10") == 1 and "inline" or "eol",
+        all_frames = false,
+        virt_lines = false,
+        virt_text_win_col = nil,
+      })
     end,
   },
 
