@@ -1,51 +1,34 @@
 -- Custom statusline without external plugins
 -- Get LSP status function
 function vim.g.get_lsp_status()
-  local buf_clients = vim.lsp.get_clients({ bufnr = 0 })
+  -- Check if current filetype has a linter configured
+  local ft = vim.bo.filetype
+  local has_lint = false
 
-  if #buf_clients == 0 then
+  -- Check if nvim-lint is loaded
+  local lint_ok, lint = pcall(require, "lint")
+  if lint_ok and lint.linters_by_ft then
+    has_lint = lint.linters_by_ft[ft] ~= nil
+  end
+
+  -- If no linter is configured for this filetype, return empty string
+  if not has_lint then
     return " "
   end
 
   -- Get diagnostics count
   local diagnostics = vim.diagnostic.get(0)
   local errors = 0
-  local warnings = 0
-  local info = 0
-  local hints = 0
 
   for _, diagnostic in ipairs(diagnostics) do
     if diagnostic.severity == vim.diagnostic.severity.ERROR then
       errors = errors + 1
-    elseif diagnostic.severity == vim.diagnostic.severity.WARN then
-      warnings = warnings + 1
-    elseif diagnostic.severity == vim.diagnostic.severity.INFO then
-      info = info + 1
-    elseif diagnostic.severity == vim.diagnostic.severity.HINT then
-      hints = hints + 1
     end
   end
 
-  -- Build status string
-  local status_parts = {}
-
+  -- Return status string
   if errors > 0 then
-    table.insert(status_parts, errors .. " 󱎘 ")
-  end
-  -- For now only show the errors
-  -- if warnings > 0 then
-  --   table.insert(status_parts, warnings ..  " ")
-  -- end
-  -- if info > 0 then
-  --   table.insert(status_parts, info .. "󰙎 ")
-  -- end
-  -- if hints > 0 then
-  --   table.insert(status_parts, hints .. "󰛨 ")
-  -- end
-
-  -- Return diagnostic status only
-  if #status_parts > 0 then
-    return " " .. table.concat(status_parts, " ")
+    return " " .. errors .. " 󱎘 "
   else
     return "   "
   end
