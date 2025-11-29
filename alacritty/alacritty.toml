@@ -21,3 +21,13 @@ bindings = [
 { key = "Insert", mods = "Control", action = "Copy" }
 ]
 
+[cursor.style]
+shape = "Beam"
+blinking = "Off"
+
+[cursor.vi_mode_style]
+shape = "Block"
+
+[cursor]
+thickness = 0.35
+
