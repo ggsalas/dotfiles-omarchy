@@ -1,8 +1,8 @@
 return {
   "rebelot/kanagawa.nvim",
+  name = "kanagawa",
   lazy = false,
   priority = 1000,
-  name = "kanagawa",
   opts = {},
   config = function(_, opts)
     vim.opt.background = "dark"

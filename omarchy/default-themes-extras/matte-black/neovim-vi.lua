@@ -1,8 +1,8 @@
 return {
   "tahayvr/matteblack.nvim",
+  name = "matteblack",
   lazy = false,
   priority = 1000,
-  name = "matteblack",
   opts = {},
   config = function(_, opts)
     vim.opt.background = "dark"

@@ -1,8 +1,8 @@
 return {
   "rose-pine/neovim",
+  name = "rose-pine-dawn",
   lazy = false,
   priority = 1000,
-  name = "rose-pine-dawn",
   opts = {
     variant = "dawn", -- auto, main, moon, or dawn
     dark_variant = "down", -- main, moon, or dawn

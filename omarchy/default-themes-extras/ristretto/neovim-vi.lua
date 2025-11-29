@@ -1,8 +1,8 @@
 return {
   "gthelding/monokai-pro.nvim",
+  name = "monokai-pro",
   lazy = false,
   priority = 1000,
-  name = "monokai-pro",
   opts = {
     filter = "ristretto",
     override = function()

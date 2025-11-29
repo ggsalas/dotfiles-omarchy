@@ -1,8 +1,8 @@
 return {
   "EdenEast/nightfox.nvim",
+  name = "nightfox",
   lazy = false,
   priority = 1000,
-  name = "nightfox",
   opts = {},
   config = function(_, opts)
     vim.opt.background = "dark"

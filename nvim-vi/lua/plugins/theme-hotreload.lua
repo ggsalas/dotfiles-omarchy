@@ -28,6 +28,19 @@ return {
             -- Unload theme plugin modules to force full reload
             if theme_plugin_name then
               local plugin = require("lazy.core.config").plugins[theme_plugin_name]
+
+              if not plugin or not plugin._installed then
+                vim.api.nvim_echo({
+                  { "Installing theme plugin '" .. theme_plugin_name .. "'...", "WarningMsg" },
+                }, false, {})
+                require("lazy.manage").install({
+                  plugins = { theme_plugin_name },
+                  show = false, -- silent install without UI
+                  wait = true, -- wait for installation to complete
+                })
+                vim.api.nvim_echo({}, false, {})
+              end
+
               if plugin then
                 -- Unload all lua modules from the plugin directory
                 local plugin_dir = plugin.dir .. "/lua"
