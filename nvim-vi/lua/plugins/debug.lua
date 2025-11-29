@@ -4,9 +4,26 @@ return {
   {
     "mfussenegger/nvim-dap",
     event = "VeryLazy",
+    dependencies = { "williamboman/mason.nvim", "nvim-neotest/nvim-nio" },
     config = function()
+      local dap = require("dap")
+
       for _, language in ipairs({ "typescript", "javascript" }) do
-        require("dap").configurations[language] = {
+        -- Configura el adaptador pwa-node (para Node.js solo, sin navegadores)
+        dap.adapters["pwa-node"] = {
+          type = "server",
+          host = "localhost",
+          port = "${port}",
+          executable = {
+            command = "node",
+            args = {
+              vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js",
+              "${port}",
+            },
+          },
+        }
+
+        dap.configurations[language] = {
           {
             type = "pwa-node",
             request = "launch",
@@ -17,19 +34,100 @@ return {
           {
             type = "pwa-node",
             request = "attach",
-            name = "Attach",
-            processId = require("dap.utils").pick_process,
+            name = "Port 9222",
+            port = 9222,
             cwd = "${workspaceFolder}",
           },
+          {
+            type = "pwa-node",
+            request = "attach",
+            name = "Port 9229",
+            port = 9229,
+            cwd = "${workspaceFolder}",
+          },
+          {
+            type = "pwa-node",
+            request = "attach",
+            name = "Port 9230",
+            port = 9230,
+            cwd = "${workspaceFolder}",
+          },
+          -- NOT sure why not work - the issue is that not stop on breakpoints
+          -- Filer to pick process based on open debug ports
+          -- Same list as in chrome dev tools, see `whitelisted_ports`
+          -- chrome://inspect/#devices -> Configure
+          -- {
+          --   type = "pwa-node",
+          --   request = "attach",
+          --   name = "Select Node Process",
+          --   processId = function()
+          --     -- Build map of PID -> ports FIRST
+          --     local ss_output = vim.fn.system("ss -ltnp 2>/dev/null")
+          --     local pid_to_port = {}
+          --
+          --     for line in ss_output:gmatch("[^\r\n]+") do
+          --       local port = line:match("127%.0%.0%.1:(%d+)") or line:match(":::(%d+)")
+          --       local pid = line:match("pid=(%d+)")
+          --
+          --       if port and pid then
+          --         pid_to_port[tonumber(pid)] = port
+          --       end
+          --     end
+          --
+          --     -- Call pick_process with the label function that uses the map
+          --     local dap_utils = require("dap.utils")
+          --     local whitelisted_ports = {
+          --       ["9222"] = true,
+          --       ["9229"] = true,
+          --       ["9230"] = true,
+          --       ["9231"] = true,
+          --       ["9232"] = true,
+          --       ["3000"] = true,
+          --     }
+          --
+          --     return dap_utils.pick_process({
+          --       filter = function(proc)
+          --         local port = pid_to_port[proc.pid]
+          --         return port ~= nil and whitelisted_ports[port] == true
+          --       end,
+          --       -- label = function(proc)
+          --       --   local port = pid_to_port[proc.pid] or "-"
+          --       --   return string.format("%s - Proceso de %s", port, proc.name)
+          --       -- end,
+          --     })
+          --   end,
+          --   cwd = "${workspaceFolder}",
+          --   sourceMaps = true,
+          -- },
         }
       end
 
       -- Breakpoint signs with Nerd Font icons
-      vim.fn.sign_define("DapBreakpoint", { text = "󰝥", texthl = "DiagnosticError", linehl = "", numhl = "" })
-      vim.fn.sign_define("DapLogPoint", { text = "󰛿", texthl = "DiagnosticInfo", linehl = "", numhl = "" })
-      vim.fn.sign_define("DapBreakpointCondition", { text = "󰟃", texthl = "DiagnosticWarn", linehl = "", numhl = "" })
-      vim.fn.sign_define("DapStopped", { text = "󰁔", texthl = "DiagnosticHint", linehl = "", numhl = "" })
-      vim.fn.sign_define("DapBreakpointRejected", { text = "󰅖", texthl = "DiagnosticError", linehl = "", numhl = "" })
+      vim.fn.sign_define("DapBreakpoint", { text = "󰝥", texthl = "DiagnosticInfo", linehl = "", numhl = "" })
+
+      -- Eval var under cursor
+      vim.keymap.set("n", "<space>?", function()
+        require("dapui").eval(nil, { enter = true })
+      end)
+
+      vim.keymap.set("n", "<space>db", dap.toggle_breakpoint)
+      vim.keymap.set("n", "<leader>dc", dap.continue)
+      vim.keymap.set("n", "<leader>dx", dap.terminate)
+
+      vim.keymap.set("n", "<F6>", dap.step_into)
+      vim.keymap.set("n", "<F7>", dap.step_over)
+      vim.keymap.set("n", "<F8>", dap.step_out)
+      vim.keymap.set("n", "<F9>", dap.step_back)
+      vim.keymap.set("n", "<F10>", dap.restart)
+    end,
+  },
+
+  -- seems not working
+  {
+    "theHamsta/nvim-dap-virtual-text",
+    dependencies = { "mfussenegger/nvim-dap", "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      require("nvim-dap-virtual-text").setup()
     end,
   },
 
@@ -45,23 +143,11 @@ return {
     config = function()
       local dap = require("dap")
       local dapui = require("dapui")
-      local dapui_widgets = require("dap.ui.widgets")
 
       dapui.setup({
         controls = {
           element = "repl",
           enabled = true,
-          icons = {
-            disconnect = "󰖷",
-            pause = "󰏤",
-            play = "󰐊",
-            run_last = "󰑙",
-            step_back = "󰜱",
-            step_into = "󰆹",
-            step_out = "󰆸",
-            step_over = "󰆷",
-            terminate = "󰝤",
-          },
         },
         element_mappings = {},
         expand_lines = true,
@@ -72,11 +158,6 @@ return {
           },
         },
         force_buffers = true,
-        icons = {
-          collapsed = "󰅂",
-          current_frame = "󰁔",
-          expanded = "󰅀",
-        },
         layouts = {
           {
             elements = {
@@ -121,57 +202,6 @@ return {
       dap.listeners.before.event_exited["dapui_config"] = function()
         dapui.close()
       end
-
-      -- Keymaps
-      vim.keymap.set("n", "<leader>de", dapui.toggle, { desc = "Debug: Toggle UI" })
-      vim.keymap.set("n", "<leader>ded", dap.disconnect, { desc = "Debug: Disconnect" })
-
-      vim.keymap.set("n", "<leader>dj", dap.continue, { desc = "Debug: Continue" })
-      vim.keymap.set("n", "<leader>dh", dap.toggle_breakpoint, { desc = "Debug: Toggle breakpoint" })
-      vim.keymap.set("n", "<leader>dH", function()
-        dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-      end, { desc = "Debug: Conditional breakpoint" })
-      
-      vim.keymap.set({ "n", "v" }, "<leader>dk", function()
-        dapui.eval(nil, { enter = true })
-      end, { desc = "Debug: Eval" })
-      
-      vim.keymap.set({ "n", "v" }, "<leader>dK", dapui_widgets.hover, { desc = "Debug: Hover" })
-      vim.keymap.set("n", "<leader>dl", dap.run_last, { desc = "Debug: Run last" })
-      
-      vim.keymap.set("n", "<leader>d;", function()
-        dapui_widgets.centered_float(dapui_widgets.scopes)
-      end, { desc = "Debug: Scopes" })
-
-      -- Step controls
-      vim.keymap.set("n", "<leader>d<down>", dap.step_into, { desc = "Debug: Step into" })
-      vim.keymap.set("n", "<leader>d<up>", dap.step_out, { desc = "Debug: Step out" })
-      vim.keymap.set("n", "<leader>d<right>", dap.step_over, { desc = "Debug: Step over" })
-      vim.keymap.set("n", "<leader>d<left>", dap.step_back, { desc = "Debug: Step back" })
-    end,
-  },
-
-  -- DAP-based JavaScript debugger
-  --------------------------------
-  {
-    "microsoft/vscode-js-debug",
-    lazy = true,
-    build = "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
-  },
-
-  -- nvim-dap adapter for vscode-js-debug
-  ---------------------------------------
-  {
-    "mxsdev/nvim-dap-vscode-js",
-    dependencies = {
-      "mfussenegger/nvim-dap",
-      "microsoft/vscode-js-debug",
-    },
-    config = function()
-      require("dap-vscode-js").setup({
-        debugger_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug",
-        adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" },
-      })
     end,
   },
 }

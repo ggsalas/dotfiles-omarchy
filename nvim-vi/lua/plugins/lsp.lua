@@ -4,8 +4,11 @@ return {
   {
     "williamboman/mason.nvim",
     lazy = false,
-    config = function()
-      require("mason").setup()
+    opts = {
+      ensure_installed = { "js-debug-adapter" }, -- Instala automáticamente el adaptador para vscode-js-debug
+    },
+    config = function(opts)
+      require("mason").setup(opts)
     end,
   },
   {
