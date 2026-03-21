@@ -1,0 +1,48 @@
+# Theme colors from omarchy (safe to source, only sets colors)
+config-file = ?"~/.config/omarchy/current/theme/ghostty.conf"
+
+# Font
+font-family = "JetBrainsMono Nerd Font"
+font-style = Semibold
+font-size = 10
+
+# Window
+window-theme = ghostty
+window-padding-x = 14
+window-padding-y = 14
+confirm-close-surface = false
+resize-overlay = never
+gtk-toolbar-style = flat
+
+# Cursor styling
+cursor-style = bar
+adjust-cursor-thickness = 3
+cursor-style-blink = false
+
+# Shell integration (without ssh-env)
+shell-integration-features = no-cursor
+
+# Keyboard bindings (from omarchy)
+keybind = shift+insert=paste_from_clipboard
+keybind = control+insert=copy_to_clipboard
+keybind = super+control+shift+alt+arrow_down=resize_split:down,100
+keybind = super+control+shift+alt+arrow_up=resize_split:up,100
+keybind = super+control+shift+alt+arrow_left=resize_split:left,100
+keybind = super+control+shift+alt+arrow_right=resize_split:right,100
+
+# Keyboard bindings - unbind Ghostty defaults to pass through to tmux
+keybind = ctrl+shift+j=unbind
+keybind = ctrl+shift+i=unbind
+keybind = ctrl+shift+o=unbind
+keybind = ctrl+shift+arrow_left=unbind
+keybind = ctrl+shift+arrow_right=unbind
+keybind = ctrl+shift+p=unbind
+keybind = ctrl+shift+n=unbind
+keybind = ctrl+shift+,=unbind
+keybind = f11=toggle_fullscreen
+
+# Slowdown mouse scrolling
+mouse-scroll-multiplier = 0.95
+
+# Fix general slowness on hyprland (https://github.com/ghostty-org/ghostty/discussions/3224)
+async-backend = epoll

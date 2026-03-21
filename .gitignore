@@ -15,6 +15,8 @@ nvim-vi/db_ui/
 !bash/**
 !git/
 !git/**
+!ghostty/
+!ghostty/**
 !opencode/
 !opencode/**
 !waybar/
@@ -26,6 +28,8 @@ nvim-vi/db_ui/
 !posting/**
 !bin/
 !bin/**
+!tmux/
+!tmux/**
 
 # Not add backup files
 **/*.bak.[0-9]*
