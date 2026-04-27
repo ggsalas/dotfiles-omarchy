@@ -20,17 +20,25 @@ vim.keymap.set(
 )
 
 -- Window movments
-vim.keymap.set("n", "<c-j>", ":wincmd j<CR>")
-vim.keymap.set("n", "<c-k>", ":wincmd k<CR>")
-vim.keymap.set("n", "<c-h>", ":wincmd h<CR>")
-vim.keymap.set("n", "<c-l>", ":wincmd l<CR>")
-vim.keymap.set("t", "<c-j>", "<c-\\><c-n><c-w>j")
-vim.keymap.set("t", "<c-k>", "<c-\\><c-n><c-w>k")
-vim.keymap.set("t", "<c-h>", "<c-\\><c-n><c-w>h")
-vim.keymap.set("t", "<c-l>", "<c-\\><c-n><c-w>l")
+vim.keymap.set({ "n", "i", "t" }, "<c-j>", "<c-\\><c-n>:wincmd j<CR>")
+vim.keymap.set({ "n", "i", "t" }, "<c-k>", "<c-\\><c-n>:wincmd k<CR>")
+vim.keymap.set({ "n", "i", "t" }, "<c-h>", "<c-\\><c-n>:wincmd h<CR>")
+vim.keymap.set({ "n", "i", "t" }, "<c-l>", "<c-\\><c-n>:wincmd l<CR>")
 
 -- tabs
-vim.keymap.set("n", "<leader>ta", ":tabnew<cr>")
+vim.keymap.set({ "n", "t" }, "<leader>tt", ":tabnew<cr>", { desc = "New tab" })
+vim.keymap.set({ "n", "t" }, "<s-l>", "gt")
+vim.keymap.set({ "n", "t" }, "<s-h>", "gT")
+vim.keymap.set({ "n", "t" }, "<leader>1", "1gt")
+vim.keymap.set({ "n", "t" }, "<leader>2", "2gt")
+vim.keymap.set({ "n", "t" }, "<leader>3", "3gt")
+vim.keymap.set({ "n", "t" }, "<leader>4", "4gt")
+vim.keymap.set({ "n", "t" }, "<leader>5", "5gt")
+vim.keymap.set({ "n", "t" }, "<leader>6", "6gt")
+vim.keymap.set({ "n", "t" }, "<leader>7", "7gt")
+vim.keymap.set({ "n", "t" }, "<leader>8", "8gt")
+vim.keymap.set({ "n", "t" }, "<leader>9", "9gt")
+vim.keymap.set({ "n", "t" }, "<leader>0", "10gt")
 
 -- window resize
 vim.keymap.set("n", "<up>", ":resize -2<cr>")
@@ -97,4 +105,6 @@ local function run_file(onSplit)
 end
 
 -- vim.keymap.set("n", "<leader>.", run_file, { noremap = true })
-vim.keymap.set("n", "<leader>.", function() run_file(true) end, { noremap = true })
+vim.keymap.set("n", "<leader>.", function()
+  run_file(true)
+end, { noremap = true })

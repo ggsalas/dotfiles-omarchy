@@ -1,32 +1,35 @@
 -- Simple tabs
-vim.api.nvim_exec([[
 function NewTabLine()
-  let s = ''
-  let t = tabpagenr()
-  let i = 1
-  while i <= tabpagenr('$')
-    let buflist = tabpagebuflist(i)
-    let winnr = tabpagewinnr(i)
-    let s .= '%' . i . 'T'
-    let s .= (i != 1 ? '%#TabLine#' : '')
-    let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
-    let s .= ' '
-    let  file = fnamemodify(
-          \ bufname(tabpagebuflist(l:i)[tabpagewinnr(l:i) - 1]),
-          \ ':t'
-          \ )
-    if file == ''
-      let file = '[No Name]'
-    endif
-    let s .= file
-    let s .= ' '
-    let s .= (getbufvar(buflist[winnr - 1], "&mod") ? '+ ' : '')
-    let i = i + 1
-  endwhile
-  let s .= '%T%#TabLineFill#%='
-  let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
-  return s
-endfunction
+  local s = ""
+  local current_tab = vim.fn.tabpagenr()
+  local tab_count = vim.fn.tabpagenr("$")
 
-set tabline=%!NewTabLine()
-]], true)
+  for i = 1, tab_count do
+    local buflist = vim.fn.tabpagebuflist(i)
+    local winnr = vim.fn.tabpagewinnr(i)
+
+    s = s .. "%" .. i .. "T"
+    if i ~= 1 then
+      s = s .. "%#TabLine#"
+    end
+    s = s .. (i == current_tab and "%#TabLineSel#" or "%#TabLine#")
+    s = s .. " "
+
+    local file = vim.fn.fnamemodify(vim.fn.bufname(buflist[winnr]), ":t")
+    if file == "" then
+      file = "No Name"
+    end
+
+    s = s .. "[" .. i .. "] " .. file .. " "
+
+    if vim.fn.getbufvar(buflist[winnr], "&mod") == 1 then
+      s = s .. "+ "
+    end
+  end
+
+  s = s .. "%T%#TabLineFill#%="
+  s = s .. (tab_count > 1 and "%999XX" or "X")
+  return s
+end
+
+vim.o.tabline = "%!v:lua.NewTabLine()"

@@ -1,4 +1,6 @@
-vim.keymap.set("n", "<leader>te", ":botright vsp term://bash<cr> i")
+vim.keymap.set("n", "<leader>tet", ":tabnew | terminal<cr>i", { desc = "New terminal tab" })
+vim.keymap.set("n", "<leader>tev", ":botright vsp term://zsh<cr>i")
+vim.keymap.set("n", "<leader>tes", ":botright sp term://zsh<cr>i")
 
 -- Terminal mode configuration
 local terminal_mode = vim.api.nvim_create_augroup("terminal_mode", { clear = true })
