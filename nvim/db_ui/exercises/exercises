@@ -1,0 +1,461 @@
+select * from cd.facilities;
+select * from cd.members;
+select * from cd.bookings;
+
+select starttime
+  from cd.bookings
+  where memid = (select memid from cd.members where firstname like '%David%' and surname like '%Farrell%')
+
+select bo.starttime
+  from  cd.bookings bo
+  join cd.members me 
+    on me.memid = bo.memid
+  where
+    me.firstname = 'David' and
+    me.surname = 'Farrell'
+
+
+select bo.starttime as start, name 
+  from cd.facilities fa
+    join cd.bookings bo
+      on fa.facid = bo.facid
+  where fa.name like 'Tennis Court%' 
+  and bo.starttime > '2012-09-21' and bo.starttime < '2012-09-22'
+  order by bo.starttime
+ 
+select distinct me2.firstname, me2.surname
+  from cd.members me
+  join cd.members me2
+    on me.recommendedby = me2.memid
+  order by me2.surname, me2.firstname
+
+select me.firstname as memfname, me.surname as memsname, me2.firstname as recfnamee, me2.surname as recsname
+  from cd.members me
+  left join cd.members me2
+    on me.recommendedby = me2.memid
+  order by me.surname, me.firstname
+
+-- Produce a list of all members who have used a tennis court
+select distinct concat(m.firstname, ' ', m.surname) as member, f.name as facility
+  from cd.members m
+  join cd.bookings b
+    on m.memid = b.memid
+  left join cd.facilities f
+    on f.facid = b.facid
+  where f.name like 'Tennis Court%'
+  order by member, facility
+
+-- Produce a list of costly bookings
+select 
+  concat(m.firstname, ' ', m.surname) as member,
+  f.name as facility, 
+  (case when b.memid = 0 then f.guestcost * b.slots else f.membercost * b.slots end) as cost
+  from cd.bookings b
+  join cd.facilities f
+    on f.facid = b.facid
+  join cd.members m
+    on m.memid = b.memid
+  where starttime > '2012-09-14' and starttime < '2012-09-15' and  (case when b.memid = 0 then f.guestcost * b.slots else f.membercost * b.slots end) > 30
+  order by cost desc;
+
+-- Produce a list of all members, along with their recommender, using no joins.
+SELECT DISTINCT
+  concat(m.firstname, ' ', m.surname) as member,
+  (
+    select concat(m1.firstname, ' ', m1.surname) as recommender
+    from cd.members m1
+    where m1.memid = m.recommendedby
+  )
+  from cd.members m
+  order by member
+
+-- Produce a list of costly bookings, using a subquery
+select 
+  member, 
+  facility, 
+  cost from (
+    select 
+      concat(m.firstname, ' ', m.surname) as member,
+      f.name as facility, 
+      case when b.memid = 0 
+        then f.guestcost * b.slots 
+        else f.membercost * b.slots 
+      end as cost
+      from cd.bookings b
+        join cd.facilities f
+          on f.facid = b.facid
+        join cd.members m
+          on m.memid = b.memid
+      where starttime > '2012-09-14' and starttime < '2012-09-15'
+  ) as bookings
+where cost > 30
+order by cost desc;
+
+-- Modify data
+-- Insert some data into a table
+
+insert into cd.facilities(facid, name, membercost, guestcost, initialoutlay, monthlymaintenance)
+  values(9, 'Spa', 20, 30, 100000, 800); 
+
+-- Insert multiple rows of data into a table
+insert into cd.facilities(facid, name, membercost, guestcost, initialoutlay, monthlymaintenance)
+  values(9, 'Spa', 20, 30, 100000, 800),
+        (10, 'Squash Court 2', 3.5, 17.5, 5000, 80);
+
+ -- Insert calculated data into a table
+insert into cd.facilities(facid, name, membercost, guestcost, initialoutlay, monthlymaintenance)
+  values(
+    (select max(facid) from cd.facilities) + 1,
+    'Spa', 
+    20, 
+    30, 
+    100000, 
+    800
+  ); 
+
+-- Update some existing data
+update cd.facilities
+  set initialoutlay = 10000
+  where facid = 1
+
+-- Update multiple rows and columns at the same time
+update cd.facilities
+  set guestcost = 30,
+      membercost = 6
+  where name like 'Tennis Court%'
+
+-- Update a row based on the contents of another row
+update cd.facilities
+  set guestcost = (select guestcost from cd.facilities where name = 'Tennis Court 1') * 1.1,
+      membercost = (select membercost from cd.facilities where name = 'Tennis Court 1') * 1.1
+  where name = 'Tennis Court 2';
+
+  -- same using FROM 
+  update cd.facilities fa
+    set guestcost = f.guestcost * 1.1,
+        membercost = f.membercost * 1.1
+    from (select * from cd.facilities where name = 'Tennis Court 1') f
+    where fa.name = 'Tennis Court 2';
+
+-- Delete all bookings
+-- delete from cd.bookings;
+
+-- Delete a member from the cd.members table
+delete from cd.members m
+  where m.memid in(
+    select m1.memid
+      from cd.members m1
+      left join cd.bookings b1
+        on m1.memid = b1.memid
+      where b1.memid is null
+  )
+   
+  -- using not in
+  delete from cd.members where memid not in (select memid from cd.bookings);          
+  -- or 
+  delete from cd.members mems where not exists (select 1 from cd.bookings where memid = mems.memid);
+
+-- Aggregation
+-- Count the number of facilities
+select count(*) as count 
+from cd.facilities
+  -- COUNT(*) simply returns the number of rows
+  -- COUNT(address) counts the number of non-null addresses in the result set.
+  -- Finally, COUNT(DISTINCT address) counts the number of different addresses in the facilities table.
+  -- There are a bunch more aggregation functions, including MAX, MIN, SUM, and AVG. 
+
+-- Count the number of expensive facilities
+select count(*) as count
+  from cd.facilities f
+  where guestcost >= 10
+
+-- Count the number of recommendations each member makes.
+select recommendedby, count(*) 
+	from cd.members
+	where recommendedby is not null
+	group by recommendedby
+order by recommendedby;
+
+-- List the total slots booked per facility
+select facid, sum(slots)
+from cd.bookings 
+group by facid
+order by facid
+
+-- List the total slots booked per facility in a given month
+select facid, sum(slots) as "Total Slots"
+from cd.bookings 
+where starttime >= '2012-09-01' and starttime < '2012-10-01'
+group by facid
+order by sum(slots)
+
+-- List the total slots booked per facility per month
+select 
+  facid, 
+  EXTRACT(MONTH FROM starttime) as month,  
+  sum(slots) as "Total Slots"
+from cd.bookings 
+where extract(year from starttime) = 2012
+group by facid, month
+order by facid,  month
+
+-- Find the count of members who have made at least one booking
+select count (*)
+from (select count(*) from cd.bookings group by memid) aa
+  -- alternative way 
+  select count(distinct memid) from cd.bookings          
+
+-- List facilities with more than 1000 slots booked
+select facid, sum(slots) as "Total Slots"
+from cd.bookings
+group by facid
+having sum(slots) > 1000
+order by facid
+
+-- Find the total revenue of each facility
+select 
+  name, 
+  sum(case 
+    when b.memid = 0
+    then f.guestcost * b.slots
+    else f.membercost * b.slots
+    end
+  ) as revenue
+from cd.facilities f
+join cd.bookings b
+  on b.facid = f.facid
+group by f.facid
+order by revenue
+
+-- Find facilities with a total revenue less than 1000
+select 
+  name, 
+  sum(case 
+    when b.memid = 0
+    then f.guestcost * b.slots
+    else f.membercost * b.slots
+    end
+  ) as revenue
+from cd.facilities f
+join cd.bookings b
+  on b.facid = f.facid
+group by f.facid
+having   sum(case 
+    when b.memid = 0
+    then f.guestcost * b.slots
+    else f.membercost * b.slots
+    end
+  ) < 1000
+order by revenue
+
+-- Output the facility id that has the highest number of slots booked
+select facid, sum(slots) as total_slots
+from cd.bookings
+group by facid
+having sum(slots) = (
+  select max(sum2.total_slots) 
+  from  (select sum(slots) as total_slots from cd.bookings group by facid) as sum2
+)
+
+-- List the total slots booked per facility per month, part 2
+select facid, extract(month from starttime) as month, sum(slots)
+from cd.bookings
+where starttime >= '2012-01-01' and starttime < '2013-01-01'
+group by facid, month 
+union 
+select facid, null, sum(slots)
+from cd.bookings
+where starttime >= '2012-01-01' and starttime < '2013-01-01'
+group by facid
+union 
+select null, null, sum(slots)
+from cd.bookings
+where starttime >= '2012-01-01' and starttime < '2013-01-01'
+order by facid, month;
+
+  -- using rollup
+  select facid, extract(month from starttime) as month, sum(slots) as slots
+  from cd.bookings
+  where starttime >= '2012-01-01'
+  and starttime < '2013-01-01'
+  group by rollup(facid, month)
+  order by facid, month;
+
+-- List the total hours booked per named facility
+select b.facid, f.name, round(sum(b.slots) / 2.00, 2) as "Total Hours" 
+from cd.bookings b
+join cd.facilities f
+  on f.facid = b.facid
+group by b.facid, f.name
+order by b.facid
+
+-- List each member's first booking after September 1st 2012
+select m.surname, m.firstname, b.memid, min(starttime) as starttime
+from cd.bookings b
+join cd.members m 
+  on m.memid = b.memid
+where starttime >= '2012-09-01'
+group by b.memid, m.firstname, m.surname
+order by b.memid
+
+-- Produce a list of member names, with each row containing the total member count
+select 
+  (select count(*) from cd.members),
+  firstname, 
+  surname
+from cd.members
+order by joindate
+
+  -- using window functions (over)
+  select count(*) over(), firstname, surname
+  from cd.members
+  order by joindate
+
+  -- testing different window functions
+  select 
+    row_number() over(partition by date_trunc('month',joindate)) as n,
+    count(*) over(partition by date_trunc('month',joindate)), 
+    date_trunc('month',joindate) as month,
+    firstname, surname
+  from cd.members
+  order by joindate
+
+-- Produce a numbered list of members
+select 
+  row_number() over(order by joindate) as row_number,
+  firstname,
+  surname
+from cd.members
+order by joindate
+
+-- Output the facility id that has the highest number of slots booked, again
+select 
+  facid,
+  sum(slots) as fac_slots
+from cd.bookings
+group by facid
+order by fac_slots desc
+limit 1
+
+  -- same using rank
+  select facid, total 
+  from (
+    select 
+      facid, 
+      sum(slots) total, 
+      rank() over (order by sum(slots) desc) rank
+    from cd.bookings 
+    group by facid
+  ) as ranked
+  where rank = 1
+
+-- Rank members by (rounded) hours used
+select  m.firstname, m.surname, ranked.hours, ranked.rank 
+from (
+  select 
+    memid, 
+    round(sum(slots) / 2, -1) as hours,
+    rank() over(order by round(sum(slots) / 2, -1) desc) rank
+  from cd.bookings
+  group by memid
+) as ranked
+join cd.members m
+  on m.memid = ranked.memid
+order by rank, m.surname, m.firstname
+
+  -- without subquery
+  select 
+    firstname, 
+    surname,
+    round(sum(slots) / 2, -1) as hours,
+    rank() over (order by round(sum(slots) / 2, -1) desc) as rank
+  from cd.bookings b
+  join cd.members m
+    on b.memid = m.memid
+  group by m.memid
+  order by rank, surname, firstname;
+
+-- Find the top three revenue generating facilities
+select 
+  f.name as name, 
+  rank() over (
+    order by sum(case when b.memid = 0 then f.guestcost * b.slots else f.membercost * b.slots end) desc
+  ) as rank
+from cd.bookings b
+join cd.facilities f
+  on f.facid = b.facid
+group by f.name
+limit 3
+
+  -- without using limit
+  select 
+    name, 
+    rank from (
+      select 
+        f.name as name, 
+        rank() over (
+          order by sum(case when b.memid = 0 then f.guestcost * b.slots else f.membercost * b.slots end) desc
+        ) as rank
+      from cd.bookings b
+      inner join cd.facilities f
+        on b.facid = f.facid
+      group by f.name
+    ) as subq
+    where rank <= 3
+  order by rank;
+
+-- Classify facilities by value
+select 
+  name,
+  (case
+    when revenue_ntile = 1 then 'high'
+    when revenue_ntile = 2 then 'average'
+    else 'low' end
+  ) as revenue
+from (
+  select 
+    name,
+    sum(case when b.memid = 0 then f.guestcost * b.slots else f.membercost * b.slots end) as revenue_value,
+    ntile(3) over (
+      order by sum(case when b.memid = 0 then f.guestcost * b.slots else f.membercost * b.slots end) desc
+    ) as revenue_ntile
+  from cd.bookings b
+  inner join cd.facilities f
+    on b.facid = f.facid
+  group by f.name
+) as subq
+order by revenue_ntile, name;
+
+-- Calculate the payback time for each facility
+select 	
+  f.name as name,
+  f.initialoutlay / (
+    sum(case when b.memid = 0 then f.guestcost * b.slots else f.membercost * b.slots end) / 3
+    - f.monthlymaintenance
+  ) as months
+from cd.bookings b
+inner join cd.facilities f
+        on b.facid = f.facid
+group by f.facid
+order by name;   
+
+-- Calculate a rolling average of total revenue
+select 
+  dategen.date,
+  (
+    select sum(case 
+      when b.memid = 0 
+      then f.guestcost * b.slots 
+      else f.membercost * b.slots 
+    end) / 15 as rev
+    from cd.bookings b
+    join cd.facilities f
+      on b.facid = f.facid
+    where b.starttime < dategen.date + interval '1 day' and b.starttime > dategen.date - interval '14 days'
+    order by dategen.date
+  ) as revenue
+from (
+  select cast (
+    generate_series(date '2012-08-01', '2012-08-31', interval '1 day') as date
+  ) as date
+) as dategen

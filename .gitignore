@@ -4,6 +4,8 @@
 !alacritty/**
 !hypr/
 !hypr/**
+!nvim/
+!nvim/**
 !nvim-vi/
 !nvim-vi/**
 nvim-vi/db_ui/
@@ -30,6 +32,9 @@ nvim-vi/db_ui/
 !bin/**
 !tmux/
 !tmux/**
+
+!omarchy/shell.json
+
 
 # Not add backup files
 **/*.bak.[0-9]*

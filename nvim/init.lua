@@ -12,6 +12,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("configs")
+require("vim._core.ui2").enable()
 require("lazy").setup("plugins", {
   change_detection = {
     enabled = true, -- keep auto-reload enabled

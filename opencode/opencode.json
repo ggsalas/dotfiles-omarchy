@@ -1,5 +1,43 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "theme": "system",
-  "autoupdate": false
+  "autoupdate": false,
+  "plugin": [],
+  "provider": {
+    "ollama": {
+      "models": {
+        "kamekichi128/qwen3-4b-instruct-2507": {
+          "_launch": true,
+          "name": "kamekichi128/qwen3-4b-instruct-2507"
+        },
+        "krith/qwen2.5.1-coder-7b-instruct:IQ2_M": {
+          "_launch": true,
+          "name": "krith/qwen2.5.1-coder-7b-instruct:IQ2_M"
+        },
+        "llama3.2:1b": {
+          "description": "Modelo más liviano - rápido",
+          "name": "llama3.2:1b"
+        },
+        "phi4-mini:3.8b": {
+          "description": "Chat rápido - 16 tok/s",
+          "name": "phi4-mini:3.8b"
+        },
+        "qwen3.5": {
+          "_launch": true,
+          "name": "qwen3.5"
+        },
+        "qwen3:4b-instruct": {
+          "_launch": true,
+          "name": "qwen3:4b-instruct"
+        }
+      },
+      "name": "Ollama (Local)",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "http://localhost:11434/v1",
+        "chunkTimeout": 600000,
+        "timeout": 600000
+      }
+    }
+  },
+  "theme": "system"
 }

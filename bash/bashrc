@@ -13,7 +13,7 @@ export PATH=$HOME/.opencode/bin:$PATH
 # posting tui
 export POSTING_THEME_DIRECTORY=$HOME/.config/posting/themes
 
-alias vi='NVIM_APPNAME=nvim-vi nvim'
+alias vi='NVIM_APPNAME=nvim nvim'
 
 alias inspect="NODE_OPTIONS='--inspect'"
 alias debug=inspect

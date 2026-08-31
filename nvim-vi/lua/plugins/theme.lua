@@ -1,1 +1,0 @@
-/home/ggsalas/.config/omarchy/current/theme/neovim-vi.lua

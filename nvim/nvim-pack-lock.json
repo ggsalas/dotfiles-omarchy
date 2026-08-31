@@ -1,0 +1,17 @@
+{
+  "plugins": {
+    "aether": {
+      "rev": "567efb778534e11ee1072d4fe27178f705a27d8a",
+      "src": "https://github.com/bjarneo/aether.nvim.git",
+      "version": "'v3'"
+    },
+    "kanagawa.nvim": {
+      "rev": "bb85e4bfc8d89b0e62c8fa53ccdd13d12e2f77b3",
+      "src": "https://github.com/rebelot/kanagawa.nvim.git"
+    },
+    "lumon.nvim": {
+      "rev": "f8ce95213e57b379089da23abc36a1fc39936b63",
+      "src": "https://github.com/omacom-io/lumon.nvim.git"
+    }
+  }
+}
