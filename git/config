@@ -1,28 +1,67 @@
 # See https://git-scm.com/docs/git-config
 
 [alias]
-	co = checkout
-	br = branch
-	ci = commit
-	st = status
-[init]
-	defaultBranch = master
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+  dt = difftool
+  ch = checkout
+  br = branch
+  co = commit -m
+  st = status -s
+  cp = cherry-pick
+  ls = log --pretty=format:"%C(green)%h\\ %C(yellow)[%ad]%Cred%d\\ %Creset%s%C(magenta)\\ [%an]" --decorate --date=relative
+  ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%C(magenta)\\ [a:%an,c:%cn]" --decorate --numstat
+  lb = !git reflog show --pretty=format:'%gs ~ %gd' --date=relative | grep 'checkout:' | grep -oE '[^ ]+ ~ .*' | awk -F~ '!seen[$1]++' | head -n 10 | awk -F' ~ HEAD@{' '{printf(\"  \\033[33m%s: \\033[37m %s\\033[0m\\n\", substr($2, 1, length($2)-1), $1)}'
+
 [pull]
-	rebase = true 			 # Rebase (instead of merge) on pull
+  rebase = true
+
 [push]
-	autoSetupRemote = true   # Automatically set upstream branch on push
+  autoSetupRemote = true   # Automatically set upstream branch on push
+
+[init]
+  defaultBranch = master
+
+[color "status"]
+  added = green
+  changed = red
+  untracked = blue
+  deleted = red
+
+[core]
+  editor = nvim
+
 [diff]
-	algorithm = histogram    # Clearer diffs on moved/edited lines
-	colorMoved = plain       # Highlight moved blocks in diffs
-	mnemonicPrefix = true    # More intuitive refs in diff output
-[commit]
-	verbose = true           # Include diff comment in commit message template
+  tool = vimdiff
+  algorithm = histogram    # Clearer diffs on moved/edited lines
+  colorMoved = plain       # Highlight moved blocks in diffs
+  mnemonicPrefix = true    # More intuitive refs in diff output
+
 [column]
-	ui = auto 			     # Output in columns when possible
+  ui = auto    # Output in columns when possible
+
+[difftool]
+  prompt = true
+
+[difftool "vimdiff"]
+  cmd = nvim -d ~/.vimrc \"$LOCAL\" \"$REMOTE\"
+
+[merge]
+  tool = vimdiff
+
+[mergetool]
+  path = nvim
+  keepBackup = false
+
+[mergetool "vimdiff"]
+  path = nvim
+  cmd = nvim -d \"$MERGED\" \"$REMOTE\" 
+
 [branch]
-	sort = -committerdate    # Sort branches by most recent commit first
+  sort = -committerdate    # Sort branches by most recent commit first
+
 [tag]
-	sort = -version:refname  # Sort version numbers as you would expect
+  sort = -version:refname  # Sort version numbers as you would expect
+
 [rerere]
-	enabled = true           # Record and reuse conflict resolutions
-	autoupdate = true        # Apply stored conflict resolutions automatically
+  enabled = true           # Record and reuse conflict resolutions
+  autoupdate = true        # Apply stored conflict resolutions automatically
